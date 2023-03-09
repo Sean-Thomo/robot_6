@@ -1,9 +1,3 @@
-# -------------------------------------------------------------------------------------------------
-#
-# TODO: Please replace this placeholder code with your solution for Toy Robot 4, and work from there.
-#
-# -------------------------------------------------------------------------------------------------
-import maze.obstacles as obs
 
 # variables tracking position and direction
 position_x = 0
@@ -58,6 +52,40 @@ def update_position(steps, robot_name):
         return True
     else:
         return False
+
+
+def do_forward(robot_name, steps):
+    """
+    Moves the robot forward the number of steps
+    :param robot_name:
+    :param steps:
+    :return: (True, forward output text)
+    """
+    do_next = update_position(steps, robot_name)
+    
+    if do_next:
+        return True, ' > '+robot_name+' moved forward by '+str(steps)+' steps.'
+    elif do_next == None:
+        return True, f"{robot_name} Sorry, there is an obstacle in the way."
+    else:
+        return True, ''+robot_name+': Sorry, I cannot go outside my safe zone.'
+
+
+def do_back(robot_name, steps):
+    """
+    Moves the robot forward the number of steps
+    :param robot_name:
+    :param steps:
+    :return: (True, forward output text)
+    """
+    do_next = update_position(-steps, robot_name)
+
+    if do_next:
+        return True, ' > '+robot_name+' moved back by '+str(steps)+' steps.'
+    elif do_next == None:
+        return True, f"{robot_name} Sorry, there is an obstacle in the way."
+    else:
+        return True, ''+robot_name+': Sorry, I cannot go outside my safe zone.'
 
 
 def do_right_turn(robot_name):

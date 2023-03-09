@@ -1,19 +1,7 @@
-# -------------------------------------------------------------------------------------------------
-#
-# TODO: Please replace this placeholder code with your solution for Toy Robot 4, and work from there.
-#
-# -------------------------------------------------------------------------------------------------
 import turtle
 import sys
-import import_helper as ih
 
 turtle.tracer(2)
-
-if len(sys.argv) == 2:
-    obs = ih.dynamic_import('maze.obstacles')
-elif len(sys.argv) == 3:
-    if sys.argv[1] == 'turtle' and sys.argv[2] == 'simple_maze':
-        obs = ih.dynamic_import('maze.simple_maze')
 
 # variables tracking position and direction
 position_x = 0
@@ -102,6 +90,40 @@ def update_position(steps, robot_name):
         return False
 
 
+def do_forward(robot_name, steps):
+    """
+    Moves the robot forward the number of steps
+    :param robot_name:
+    :param steps:
+    :return: (True, forward output text)
+    """
+    do_next = update_position(steps, robot_name)
+    
+    if do_next:
+        return True, ' > '+robot_name+' moved forward by '+str(steps)+' steps.'
+    elif do_next == None:
+        return True, f"{robot_name} Sorry, there is an obstacle in the way."
+    else:
+        return True, ''+robot_name+': Sorry, I cannot go outside my safe zone.'
+
+
+def do_back(robot_name, steps):
+    """
+    Moves the robot forward the number of steps
+    :param robot_name:
+    :param steps:
+    :return: (True, forward output text)
+    """
+    do_next = update_position(-steps, robot_name)
+
+    if do_next:
+        return True, ' > '+robot_name+' moved back by '+str(steps)+' steps.'
+    elif do_next == None:
+        return True, f"{robot_name} Sorry, there is an obstacle in the way."
+    else:
+        return True, ''+robot_name+': Sorry, I cannot go outside my safe zone.'
+
+
 def do_right_turn(robot_name):
     """
     Do a 90 degree turn to the right
@@ -135,5 +157,5 @@ def do_left_turn(robot_name):
 
     return True, ' > '+robot_name+' turned left.'
 
-if __name__ != '__main__':
-    set_up_robot_environment()
+# if __name__ != '__main__':
+#     set_up_robot_environment()

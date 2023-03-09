@@ -1,9 +1,3 @@
-# -------------------------------------------------------------------------------------------------
-#
-# TODO: Please replace this placeholder code with your solution for Toy Robot 4, and work from there.
-#
-# -------------------------------------------------------------------------------------------------
-
 # Import modules
 import sys
 import random
@@ -20,13 +14,19 @@ obstacles = []
 #commands history
 history = []
 
+#flags
+turtle_flag = False
+
 if len(sys.argv) > 1:
     if sys.argv[1] == 'turtle':        
         world = ih.dynamic_import('world.turtle.world')
+        world.obs = ih.dynamic_import('maze.obstacles')
     else:
         world = ih.dynamic_import('world.text.world')
+        world.obs = ih.dynamic_import('maze.obstacles')
 else: 
     world = ih.dynamic_import('world.text.world')
+    world.obs = ih.dynamic_import('maze.obstacles')
 
 
 def get_robot_name():
@@ -148,40 +148,6 @@ MAZERUN BOTTOM - will let the robot figure out what commands to use to get to th
 """
 
 
-def do_forward(robot_name, steps):
-    """
-    Moves the robot forward the number of steps
-    :param robot_name:
-    :param steps:
-    :return: (True, forward output text)
-    """
-    do_next = world.update_position(steps, robot_name)
-    
-    if do_next:
-        return True, ' > '+robot_name+' moved forward by '+str(steps)+' steps.'
-    elif do_next == None:
-        return True, f"{robot_name} Sorry, there is an obstacle in the way."
-    else:
-        return True, ''+robot_name+': Sorry, I cannot go outside my safe zone.'
-
-
-def do_back(robot_name, steps):
-    """
-    Moves the robot forward the number of steps
-    :param robot_name:
-    :param steps:
-    :return: (True, forward output text)
-    """
-    do_next = world.update_position(-steps, robot_name)
-
-    if do_next:
-        return True, ' > '+robot_name+' moved back by '+str(steps)+' steps.'
-    elif do_next == None:
-        return True, f"{robot_name} Sorry, there is an obstacle in the way."
-    else:
-        return True, ''+robot_name+': Sorry, I cannot go outside my safe zone.'
-
-
 def do_sprint(robot_name, steps):
     """
     Sprints the robot, i.e. let it go forward steps + (steps-1) + (steps-2) + .. + 1 number of steps, in iterations
@@ -191,9 +157,9 @@ def do_sprint(robot_name, steps):
     """
 
     if steps == 1:
-        return do_forward(robot_name, 1)
+        return world.do_forward(robot_name, 1)
     else:
-        (do_next, command_output) = do_forward(robot_name, steps)
+        (do_next, command_output) = world.do_forward(robot_name, steps)
         print(command_output)
         return do_sprint(robot_name, steps - 1)
 
@@ -256,9 +222,9 @@ def call_command(command_name, command_arg, robot_name):
     if command_name == 'help':
         return do_help()
     elif command_name == 'forward':
-        return do_forward(robot_name, int(command_arg))
+        return world.do_forward(robot_name, int(command_arg))
     elif command_name == 'back':
-        return do_back(robot_name, int(command_arg))
+        return world.do_back(robot_name, int(command_arg))
     elif command_name == 'right':
         return world.do_right_turn(robot_name)
     elif command_name == 'left':
@@ -316,34 +282,20 @@ def robot_start():
     global position_x, position_y, current_direction_index, history, obstacles
 
     obstacles = [(random.randint(-200, 200), random.randint(-200, 200)) for i in range(random.randint(1, 10))]
-
-    if len(sys.argv) == 1:
-        obs.get_obstacles(obstacles)
-
-    elif len(sys.argv) == 2:
-        if sys.argv[1] == 'turtle':
-            world.set_border()
-            world.set_up_robot_environment()
-            obs.get_obstacles(obstacles)
-            obs.pass_x_y(obstacles)
-
-    elif len(sys.argv) == 3:
-        if sys.argv[1] == 'turtle' and sys.argv[2] == 'simple_maze':
-            simple_maze = ih.dynamic_import('maze.simple_maze')
-            world.set_up_robot_environment()
-            simple_maze.setup_maze(simple_maze.maze)
-            simple_maze.get_obstacles(simple_maze.walls)
-
-    else:
-        obs.get_obstacles(obstacles)
+    
+    world.obs.obstacles_list = obstacles
+    
+    if world.obs.obstacles_list:
+        if turtle_flag:
+            world.setup_robot_environment()
+        print("There are some obstacles:")
+        for x,y in world.obs.obstacles_list:
+            print(f"- At position {x},{y} (to {x+4},{y+4})")
 
     robot_name = get_robot_name()
     output(robot_name, "Hello kiddo!")
     if len(sys.argv) == 3:
         print(f"{robot_name}: Loaded {sys.argv[-1]}.")
-
-    elif obstacles:
-        obs.print_obstacles(robot_name)
 
     position_x = 0
     position_y = 0
