@@ -22,6 +22,7 @@ def set_up_robot_environment():
     robot.home()
     robot.setheading(90)
     robot.pensize(2)
+    draw_obstacles()
     turtle.update()
     
 def set_border():
@@ -39,6 +40,16 @@ def set_border():
     robot.home()
     robot.setheading(90)
     turtle.update()
+
+
+def draw_obstacles():
+    slave = turtle.Turtle()
+    for x, y in obs.obstacles_list:
+        slave.penup(), slave.goto(x, y), slave.pendown()
+        for i in range(4):
+            slave.fd(4)
+            slave.lt(90)
+    slave.hideturtle()
 
 
 def show_position(robot_name):
