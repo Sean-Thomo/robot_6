@@ -156,6 +156,3 @@ def do_left_turn(robot_name):
     turtle.update()
 
     return True, ' > '+robot_name+' turned left.'
-
-# if __name__ != '__main__':
-#     set_up_robot_environment()

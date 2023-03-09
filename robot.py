@@ -1,15 +1,11 @@
 # Import modules
 import sys
 import random
-import maze.obstacles as obs
 import import_helper as ih
 
 # list of valid command names
 valid_commands = ['off', 'help', 'replay', 'forward', 'back', 'right', 'left', 'sprint', 'mazerun']
 move_commands = valid_commands[3:]
-
-current_direction_index = 0
-obstacles = []
 
 #commands history
 history = []
@@ -21,6 +17,7 @@ if len(sys.argv) > 1:
     if sys.argv[1] == 'turtle':        
         world = ih.dynamic_import('world.turtle.world')
         world.obs = ih.dynamic_import('maze.obstacles')
+        turtle_flag = True
     else:
         world = ih.dynamic_import('world.text.world')
         world.obs = ih.dynamic_import('maze.obstacles')
@@ -279,28 +276,24 @@ def add_to_history(command):
 def robot_start():
     """This is the entry point for starting my robot"""
 
-    global position_x, position_y, current_direction_index, history, obstacles
-
-    obstacles = [(random.randint(-200, 200), random.randint(-200, 200)) for i in range(random.randint(1, 10))]
     
+    robot_name = get_robot_name()
+    output(robot_name, "Hello kiddo!")
+
+    #making obstacles and sending them to obs module
+    obstacles = [(random.randint(-200, 200), random.randint(-200, 200)) for i in range(random.randint(1, 10))]
     world.obs.obstacles_list = obstacles
     
+    #show obstacles if there are some
     if world.obs.obstacles_list:
         if turtle_flag:
-            world.setup_robot_environment()
+            world.set_up_robot_environment()
         print("There are some obstacles:")
         for x,y in world.obs.obstacles_list:
             print(f"- At position {x},{y} (to {x+4},{y+4})")
 
-    robot_name = get_robot_name()
-    output(robot_name, "Hello kiddo!")
     if len(sys.argv) == 3:
         print(f"{robot_name}: Loaded {sys.argv[-1]}.")
-
-    position_x = 0
-    position_y = 0
-    current_direction_index = 0
-    history = []
 
     command = get_command(robot_name)
     while handle_command(robot_name, command):
