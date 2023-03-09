@@ -12,18 +12,19 @@ history = []
 
 #flags
 turtle_flag = False
-
-if len(sys.argv) > 1:
-    if sys.argv[1] == 'turtle':        
-        world = ih.dynamic_import('world.turtle.world')
-        world.obs = ih.dynamic_import('maze.obstacles')
-        turtle_flag = True
-    else:
-        world = ih.dynamic_import('world.text.world')
-        world.obs = ih.dynamic_import('maze.obstacles')
-else: 
-    world = ih.dynamic_import('world.text.world')
-    world.obs = ih.dynamic_import('maze.obstacles')
+world = ih.dynamic_import('world.text.world')
+world.obs = ih.dynamic_import('maze.obstacles')
+# if len(sys.argv) > 1:
+#     if sys.argv[1] == 'turtle':        
+#         world = ih.dynamic_import('world.turtle.world')
+#         world.obs = ih.dynamic_import('maze.obstacles')
+#         turtle_flag = True
+#     else:
+#         world = ih.dynamic_import('world.text.world')
+#         world.obs = ih.dynamic_import('maze.obstacles')
+# else: 
+#     world = ih.dynamic_import('world.text.world')
+#     world.obs = ih.dynamic_import('maze.obstacles')
 
 
 def get_robot_name():
@@ -214,7 +215,6 @@ def do_replay(robot_name, arguments):
 
 
 def call_command(command_name, command_arg, robot_name):
-    mazerun = ih.dynamic_import('maze.mazerun')
     
     if command_name == 'help':
         return do_help()

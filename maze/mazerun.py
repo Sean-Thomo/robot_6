@@ -1,8 +1,4 @@
-import turtle
 from collections import deque
-import import_helper as ih
-from world.turtle.world import robot
-maze = ih.dynamic_import('maze.simple_maze')
 
 # setup lists
 walls = []

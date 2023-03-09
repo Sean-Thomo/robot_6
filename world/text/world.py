@@ -50,8 +50,7 @@ def update_position(steps, robot_name):
         position_x = new_x
         position_y = new_y
         return True
-    else:
-        return False
+    return False
 
 
 def do_forward(robot_name, steps):
