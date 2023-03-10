@@ -47,9 +47,9 @@ def listen():
         yellow.x -= VEL
     if keys_pressed[pygame.K_RIGHT] and yellow.x + VEL + 30 < BORDER.x: # RIGHT
         yellow.x += VEL
-    if keys_pressed[pygame.K_a] and red.x - VEL > 0: # a
+    if keys_pressed[pygame.K_a] and red.x - VEL > BORDER.x + 2: # a
         red.x -= VEL
-    if keys_pressed[pygame.K_d] and red.x + VEL + red.width < BORDER.x: # d
+    if keys_pressed[pygame.K_d] and red.x - VEL < width - red.width: # d
         red.x += VEL
 
 
