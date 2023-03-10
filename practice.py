@@ -5,9 +5,9 @@ width, height = 900, 500
 WIN = pygame.display.set_mode((width, height))
 pygame.display.set_caption("First Game!")
 
-BLUE = (65, 155, 255)
+BLUE = (50, 80, 255)
 RED = (255, 0, 0)
-FPS = 60
+FPS = 200
 VEL = 5
 SPACE_WIDTH, SPACE_HEIGHT = 55, 40
 
@@ -39,22 +39,25 @@ def draw_window(red, yellow):
 def listen():
     # global red, yellow
     keys_pressed = pygame.key.get_pressed()
-    if keys_pressed[pygame.K_UP] and yellow.y - VEL > 0: # UP
+    # YELLOW MOVEMENT
+    if keys_pressed[pygame.K_w] and yellow.y - VEL > 0: # UP
         yellow.y -= VEL
-    if keys_pressed[pygame.K_DOWN] and yellow.y + VEL + yellow.height < height-20: # DOWN
+    if keys_pressed[pygame.K_s] and yellow.y + VEL + yellow.height < height-20: # DOWN
         yellow.y += VEL
-    if keys_pressed[pygame.K_w] and red.y - VEL > 0: # w
-        red.y -= VEL
-    if keys_pressed[pygame.K_s] and red.y + VEL + red.height < height-20: # s
-        red.y += VEL
-
-    if keys_pressed[pygame.K_LEFT] and yellow.x - VEL > 0: # LEFT
+    if keys_pressed[pygame.K_a] and yellow.x - VEL > 0: # LEFT
         yellow.x -= VEL
-    if keys_pressed[pygame.K_RIGHT] and yellow.x + VEL + 30 < BORDER.x: # RIGHT
+    if keys_pressed[pygame.K_d] and yellow.x + VEL + 30 < BORDER.x: # RIGHT
         yellow.x += VEL
-    if keys_pressed[pygame.K_a] and red.x - VEL > BORDER.x + 2: # a
+    
+    
+    # RED MOVEMENT
+    if keys_pressed[pygame.K_UP] and red.y - VEL > 0: # w
+        red.y -= VEL
+    if keys_pressed[pygame.K_DOWN] and red.y + VEL + red.height < height-20: # s
+        red.y += VEL
+    if keys_pressed[pygame.K_LEFT] and red.x - VEL > BORDER.x + 2: # a
         red.x -= VEL
-    if keys_pressed[pygame.K_d] and red.x - VEL < width - red.width: # d
+    if keys_pressed[pygame.K_RIGHT] and red.x - VEL < width - red.width: # d
         red.x += VEL
 
 
@@ -93,8 +96,8 @@ def main():
                     bullet = pygame.Rect(yellow.x + yellow.width, yellow.y + yellow.height/2 - 2, 10, 5)
                     yellow_bullets.append(bullet)
                     
-        handle_bullets(yellow_bullets, red_bullets)
-        print(red_bullets, yellow_bullets)
+        # handle_bullets(yellow_bullets, red_bullets)
+        # print(red_bullets, yellow_bullets)
         listen()
         draw_window(red, yellow)
 
